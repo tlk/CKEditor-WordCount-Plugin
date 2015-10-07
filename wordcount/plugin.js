@@ -5,8 +5,7 @@
 
 CKEDITOR.plugins.add("wordcount", {
     lang: "ca,de,el,en,es,fr,he,hr,it,jp,nl,no,pl,pt-br,ru,sv,tr", // %REMOVE_LINE_CORE%
-    version: 1.13,
-    requires: 'htmlwriter,notification,undo',
+    version: "1.13-tlkdev",
     init: function (editor) {
         var defaultFormat = "",
             intervalId,
@@ -50,12 +49,12 @@ CKEDITOR.plugins.add("wordcount", {
 
         // Default Config
         var defaultConfig = {
-            showParagraphs: true,
-            showWordCount: true,
-            showCharCount: false,
-            countSpacesAsChars: false,
-            countHTML: false,
-            hardLimit: true,
+            showParagraphs: false,
+            showWordCount: false,
+            showCharCount: true,
+            countSpacesAsChars: true,
+            countHTML: true,
+            hardLimit: false,
 
             //MAXLENGTH Properties
             maxWordCount: -1,
@@ -101,7 +100,7 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         if (config.showCharCount) {
-            var charLabel = editor.lang.wordcount[config.countHTML ? "CharCountWithHTML" : "CharCount"];
+            var charLabel = editor.lang.wordcount["CharCount"];
 
             defaultFormat += charLabel + " %charCount%";
             if (config.maxCharCount > -1) {
@@ -354,18 +353,6 @@ CKEDITOR.plugins.add("wordcount", {
 
                 if (config.showWordCount) {
                     wordCount = countWords(text);
-                }
-
-                var notification = new CKEDITOR.plugins.notification(event.editor, { message: event.editor.lang.wordcount.pasteWarning, type: 'warning' });
-
-                if (config.maxCharCount > 0 && charCount > config.maxCharCount) {
-                    notification.show();
-                    event.cancel();
-                }
-
-                if (config.maxWordCount > 0 && wordCount > config.maxWordCount) {
-                    notification.show();
-                    event.cancel();
                 }
             }
         }, editor, null, 100);
